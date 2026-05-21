@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sunny 日文語音學習站｜修正版</title>
+<style>
+:root{--pink:#ff4fb3;--pink2:#ffe8f6;--deep:#b51f75;--ink:#303038;--muted:#76707a;--card:#fff;--line:#ffd0ea;--ok:#dff8e8;--bad:#ffe1e1;--shadow:0 14px 34px rgba(255,79,179,.14)}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","Noto Sans JP","Hiragino Sans",sans-serif;background:linear-gradient(180deg,#fff8fd,#fff);color:var(--ink)} 
+header{position:sticky;top:0;z-index:20;background:rgba(255,248,253,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)} .header-inner{max-width:1240px;margin:auto;padding:16px 18px 10px}
+h1{margin:0;color:var(--pink);font-size:clamp(24px,4vw,42px)} .sub{margin:6px 0 12px;color:var(--muted);font-size:15px}
+.actions,.lesson-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:7px;flex-wrap:wrap} .lesson-tabs{flex-wrap:nowrap}
+button,.pill{border:0;border-radius:999px;padding:11px 14px;background:var(--pink);color:white;font-weight:800;font-size:15px} .secondary{background:white;border:1px solid var(--line);color:var(--deep)} .ghost{background:var(--pink2);color:var(--deep)}
+select{border:1px solid var(--line);border-radius:14px;padding:10px;background:white;font-size:16px}
+main{max-width:1240px;margin:auto;padding:18px} .mode{display:none} .mode.active{display:block} .panel,.lesson,.card,.quizbox{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-bottom:16px} .panel{padding:18px} .panel h2{margin:0;color:var(--pink)} 
+.lesson{display:none;padding:18px} .lesson.active{display:block} .lesson h2{color:var(--pink);font-size:clamp(24px,3vw,34px);margin:0 0 8px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px} .badge{background:var(--pink2);color:var(--deep);border-radius:999px;padding:6px 10px;font-weight:800;font-size:13px}
+.lesson-tabs button.active{background:var(--pink);color:white} .section-title{color:var(--pink);font-size:22px;font-weight:900;margin:18px 0 10px}
+.grammar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px} .grammar .card{padding:14px} .grammar p{margin:6px 0 0;color:#666}
+.dialogue{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff} .line{display:grid;grid-template-columns:94px 1fr auto;gap:10px;align-items:center;padding:12px;border-bottom:1px dashed #ffe0f1} .line:hover{background:#fff4fb}
+.speaker{font-weight:900;color:#9b286e} .jp{font-size:clamp(20px,2.4vw,30px);line-height:1.65;cursor:pointer} .zh{color:#666;margin-top:3px}
+.vocab{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px} .vocab-card{padding:14px;min-height:128px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.jpword{font-size:26px;font-weight:900;cursor:pointer} .kana{color:#a83b7b;font-weight:800} .zhword{color:#666;margin-top:6px} .mini-actions{display:flex;gap:6px;margin-top:10px} .star.saved{background:#ffe2f3}
+.quizbox{padding:16px;margin-top:12px} .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px} .choice{background:white;border:1px solid var(--line);color:#333;border-radius:16px;text-align:left} .choice.ok{background:var(--ok)} .choice.bad{background:var(--bad)}
+.progress{color:var(--muted);font-size:14px} .bigq{font-size:clamp(26px,5vw,46px);font-weight:900;margin:8px 0} .msg{font-weight:900;color:var(--deep);margin-top:10px}
+.kana-section{margin-bottom:20px} .kana-grid{display:grid;grid-template-columns:repeat(5,minmax(56px,1fr));gap:10px} .kana-card{background:#fff7fc;border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center} .kana-main{font-size:28px;font-weight:900} .kana-romaji{color:var(--deep);font-weight:800} .kana-pair{font-size:15px;color:#777}
+.empty{color:#888;padding:16px} footer{text-align:center;color:#999;padding:34px}
+@media (max-width:760px){main{padding:14px}.hero{grid-template-columns:1fr}.grammar{grid-template-columns:1fr}.vocab{grid-template-columns:repeat(2,minmax(0,1fr))}.choices{grid-template-columns:1fr}.line{grid-template-columns:64px 1fr}.sound{grid-column:2;justify-self:start}.actions button{font-size:14px;padding:10px 12px}}
+@media (min-width:761px) and (max-width:1180px){.vocab{grid-template-columns:repeat(3,minmax(0,1fr))}.kana-grid{grid-template-columns:repeat(7,minmax(70px,1fr))}.line{grid-template-columns:110px 1fr auto}.jp{font-size:30px}}
+@media (min-width:1181px){.kana-grid{grid-template-columns:repeat(10,minmax(70px,1fr))}}
+</style>
+</head>
+<body>
+<header><div class="header-inner">
+<h1>🌸 Sunny 日文語音學習站</h1>
+<div class="sub">第17～36課＋50音｜單字、句子、句型、選擇題、語音｜手機和平板都可用</div>
+<div class="actions">
+<button id="btnLessons">📚 課程</button>
+<button class="secondary" id="btnKana">🌸 50音</button>
+<button class="secondary" id="btnAllQuiz">🎮 全範圍測驗</button>
+<button class="secondary" id="btnFav">⭐ 收藏</button>
+<button class="secondary" id="btnWrong">📝 錯題本</button>
+<label class="pill secondary">速度 <select id="rate"><option value="0.68">慢速</option><option value="0.88" selected>正常</option><option value="1.05">稍快</option></select></label>
+<button class="ghost" id="btnToggleZh">中譯開關</button>
+<button class="ghost" id="btnStop">停止語音</button>
+</div></div></header>
+<main>
+<section class="hero">
+<div class="panel"><h2>學習方式</h2><p>每課都有句型、會話、單字與選擇題。點日文或 🔊 可播放日文語音。</p><div class="actions"><button id="btnSpeakLesson">▶ 播放本課會話</button><button class="secondary" id="btnRandom">🎲 隨機一句</button></div></div>
+<div class="panel"><h2>目前課程</h2><p id="todayTip">請選一課開始。</p><div class="progress">平板橫放時會自動變成多欄版面。</div></div>
+</section>
+<section id="lessonsMode" class="mode active"><nav id="lessonTabs" class="lesson-tabs"></nav><div id="lessons"></div></section>
+<section id="kanaMode" class="mode"><div class="panel"><h2>🌸 50音總表</h2><p>包含平假名、片假名、濁音、半濁音、拗音。點卡片可聽語音。</p><div id="kanaRoot"></div></div></section>
+<section id="allQuizMode" class="mode"><div class="panel"><h2>🎮 全範圍選擇題</h2><p>混合單字與句子題。答錯會自動加入錯題本。</p><div id="allQuiz" class="quizbox"></div></div></section>
+<section id="favMode" class="mode"><div class="panel"><h2>⭐ 收藏單字</h2><div id="favList" class="vocab"></div></div></section>
+<section id="wrongMode" class="mode"><div class="panel"><h2>📝 錯題本</h2><div id="wrongList" class="vocab"></div></div></section>
+</main>
+<footer>Made for Sunny 🌸 Japanese Voice Study</footer>
+<script>
+const lessons = [{"id": "L17", "title": "第17課｜これ・それ・あれ・どれ", "tags": ["こそあど", "指示代名詞"], "grammar": [["これ／それ／あれ／どれ", "這個／那個／那個／哪個"], ["この＋名詞／その＋名詞／あの＋名詞／どの＋名詞", "這個～／那個～／哪個～"], ["～は誰の～ですか", "這是誰的～？"]], "lines": [["例文", "これはわたしの傘です。", "這是我的傘。"], ["例文", "それは日本語の雑誌です。", "那是日文雜誌。"], ["例文", "あれはパソコンです。", "那個是個人電腦。"], ["例文", "どれが陳さんのネクタイですか。", "哪一條是陳先生的領帶呢？"], ["例文", "この人は家内です。", "這位是我太太。"], ["例文", "そのケイタイは誰のケイタイですか。", "那支手機是誰的手機？"], ["例文", "あの人は田中さんの奥さんです。", "那個人是田中先生的太太。"], ["例文", "どの車が陳さんのですか。", "哪一部車是陳先生的呢？"]], "vocab": [["傘", "かさ", "傘"], ["日本語", "にほんご", "日語"], ["雑誌", "ざっし", "雜誌"], ["パソコン", "", "個人電腦"], ["ネクタイ", "", "領帶"], ["家内", "かない", "我太太"], ["奥さん", "おくさん", "夫人"], ["ケイタイ", "", "手機"], ["車", "くるま", "車"], ["誰", "だれ", "誰"]], "tip": "第17課｜これ・それ・あれ・どれ"}, {"id": "L18", "title": "第18課｜ここ・そこ・あそこ・どこ", "tags": ["場所", "方向"], "grammar": [["ここ／そこ／あそこ／どこ", "這裡／那裡／那邊／哪裡"], ["こちら／そちら／あちら／どちら", "這邊／那邊／哪邊"], ["～はどこですか", "～在哪裡？"]], "lines": [["例文", "ここは教室です。", "這裡是教室。"], ["例文", "そこは図書館です。", "那裡是圖書館。"], ["例文", "あそこは事務室です。", "那邊是辦公室。"], ["例文", "トイレはどこですか。", "廁所在哪裡？"], ["例文", "こちらは受付です。", "這邊是櫃台。"], ["例文", "駅はあちらです。", "車站在那邊。"], ["例文", "エレベーターはどちらですか。", "電梯在哪邊？"]], "vocab": [["ここ", "", "這裡"], ["そこ", "", "那裡"], ["あそこ", "", "那邊"], ["どこ", "", "哪裡"], ["こちら", "", "這邊"], ["教室", "きょうしつ", "教室"], ["図書館", "としょかん", "圖書館"], ["受付", "うけつけ", "櫃台"], ["駅", "えき", "車站"], ["トイレ", "", "廁所"]], "tip": "第18課｜ここ・そこ・あそこ・どこ"}, {"id": "L19", "title": "第19課｜ください・お願いします", "tags": ["請求", "點餐"], "grammar": [["名詞＋をください", "請給我～"], ["お願いします", "麻煩您／拜託您"], ["いただきます", "我開動了／我收下了"]], "lines": [["例文", "コーヒーをください。", "請給我咖啡。"], ["例文", "これをください。", "請給我這個。"], ["例文", "水をお願いします。", "麻煩給我水。"], ["例文", "すみません、メニューをお願いします。", "不好意思，麻煩給我菜單。"], ["例文", "いただきます。", "我開動了。"]], "vocab": [["ください", "", "請給我"], ["お願いします", "おねがいします", "麻煩您"], ["いただきます", "", "我開動了"], ["水", "みず", "水"], ["メニュー", "", "菜單"], ["コーヒー", "", "咖啡"], ["紅茶", "こうちゃ", "紅茶"], ["お茶", "おちゃ", "茶"]], "tip": "第19課｜ください・お願いします"}, {"id": "L20", "title": "第20課｜形容詞", "tags": ["い形容詞", "な形容詞"], "grammar": [["い形容詞", "大きい、小さい、暑い、寒い"], ["な形容詞", "きれい、静か、にぎやか"], ["～は形容詞です", "～很～"]], "lines": [["例文", "この部屋は大きいです。", "這個房間很大。"], ["例文", "このかばんは小さいです。", "這個包包很小。"], ["例文", "今日は暑いです。", "今天很熱。"], ["例文", "この町はにぎやかです。", "這個城鎮很熱鬧。"], ["例文", "この教室は静かです。", "這間教室很安靜。"], ["例文", "この花はきれいです。", "這朵花很漂亮。"]], "vocab": [["大きい", "おおきい", "大的"], ["小さい", "ちいさい", "小的"], ["暑い", "あつい", "熱"], ["寒い", "さむい", "冷"], ["新しい", "あたらしい", "新的"], ["古い", "ふるい", "舊的"], ["高い", "たかい", "高／貴"], ["安い", "やすい", "便宜"], ["きれい", "", "漂亮／乾淨"], ["静か", "しずか", "安靜"], ["にぎやか", "", "熱鬧"]], "tip": "第20課｜形容詞"}, {"id": "L21", "title": "第21課｜～は～が／どんな", "tags": ["整體與部分", "どんな"], "grammar": [["～は～が形容詞です", "整體主語＋部分主語"], ["どんな＋名詞", "什麼樣的～"], ["～はどんなところですか", "～是什麼樣的地方？"]], "lines": [["例文", "台湾は果物がおいしいです。", "台灣的水果很好吃。"], ["例文", "日本は交通が便利です。", "日本的交通很方便。"], ["例文", "台北は人が多いです。", "台北人很多。"], ["例文", "田中さんは日本語が上手です。", "田中先生日文很好。"], ["例文", "台南はどんなところですか。", "台南是什麼樣的地方？"]], "vocab": [["果物", "くだもの", "水果"], ["交通", "こうつう", "交通"], ["便利", "べんり", "方便"], ["人", "ひと", "人"], ["多い", "おおい", "多"], ["上手", "じょうず", "擅長"], ["どんな", "", "什麼樣的"], ["ところ", "", "地方"], ["台北", "たいぺい", "台北"]], "tip": "第21課｜～は～が／どんな"}, {"id": "L22", "title": "第22課｜どこへ行きますか", "tags": ["動詞ます形", "ましょう"], "grammar": [["動詞ます形", "行きます、食べます"], ["ました／ません／ませんでした", "過去肯定／否定"], ["一緒に～ましょう", "一起～吧"]], "lines": [["例文", "どこへ行きますか。", "你要去哪裡？"], ["例文", "学校へ行きます。", "我要去學校。"], ["例文", "昨日、映画を見ました。", "昨天看了電影。"], ["例文", "明日、会社へ行きません。", "明天不去公司。"], ["例文", "一緒に昼ご飯を食べましょう。", "一起吃午餐吧。"]], "vocab": [["行きます", "いきます", "去"], ["来ます", "きます", "來"], ["帰ります", "かえります", "回去"], ["食べます", "たべます", "吃"], ["飲みます", "のみます", "喝"], ["見ます", "みます", "看"], ["聞きます", "ききます", "聽／問"], ["読みます", "よみます", "讀"], ["書きます", "かきます", "寫"], ["勉強します", "べんきょうします", "讀書"]], "tip": "第22課｜どこへ行きますか"}, {"id": "L23", "title": "第23課｜好き・欲しい・できます", "tags": ["喜歡", "能力"], "grammar": [["～が好きです／嫌いです", "喜歡／討厭～"], ["～が欲しいです", "想要～"], ["～があります", "有～"], ["～ができます", "會／能～"]], "lines": [["例文", "わたしはりんごが好きです。", "我喜歡蘋果。"], ["例文", "田中さんは犬が嫌いです。", "田中先生討厭狗。"], ["例文", "新しいパソコンが欲しいです。", "我想要新的電腦。"], ["例文", "わたしは車があります。", "我有車。"], ["例文", "日本語が少し話せます。", "我會說一點日文。"], ["例文", "英語が読めます。", "我會讀英文。"]], "vocab": [["好き", "すき", "喜歡"], ["嫌い", "きらい", "討厭"], ["上手", "じょうず", "擅長"], ["下手", "へた", "不擅長"], ["欲しい", "ほしい", "想要"], ["あります", "", "有"], ["できます", "", "會／能"], ["話せます", "はなせます", "會說"], ["聞けます", "きけます", "會聽"], ["読めます", "よめます", "會讀"], ["書けます", "かけます", "會寫"], ["りんご", "", "蘋果"]], "tip": "第23課｜好き・欲しい・できます"}, {"id": "L24", "title": "第24課｜あります・います", "tags": ["存在句", "所在地"], "grammar": [["場所に物があります", "某地有某物"], ["場所に人／動物がいます", "某地有人／動物"], ["物は場所にあります", "某物在某地"]], "lines": [["例文", "トイレはどこにありますか。", "廁所在哪裡？"], ["例文", "駅の近くにあります。", "在車站附近。"], ["例文", "机の上に本があります。", "桌上有書。"], ["例文", "教室に学生がいます。", "教室裡有學生。"], ["例文", "田中さんは事務室にいます。", "田中先生在辦公室。"], ["例文", "銀行の隣に郵便局があります。", "銀行旁邊有郵局。"]], "vocab": [["あります", "", "有／在"], ["います", "", "有／在"], ["近く", "ちかく", "附近"], ["隣", "となり", "旁邊"], ["前", "まえ", "前面"], ["後ろ", "うしろ", "後面"], ["上", "うえ", "上面"], ["机", "つくえ", "桌子"], ["本", "ほん", "書"], ["銀行", "ぎんこう", "銀行"], ["郵便局", "ゆうびんきょく", "郵局"]], "tip": "第24課｜あります・います"}, {"id": "L25", "title": "第25課｜初めまして、田中です", "tags": ["自我介紹", "職業"], "grammar": [["初めまして", "初次見面"], ["～です／～じゃありません", "是～／不是～"], ["どうぞよろしくお願いします", "請多多指教"]], "lines": [["田中", "初めまして、田中です。", "初次見面，我是田中。"], ["李", "初めまして、李です。どうぞよろしくお願いします。", "初次見面，我姓李。請多多指教。"], ["田中", "李さんは学生ですか。", "李小姐是學生嗎？"], ["李", "いいえ、学生じゃありません。会社員です。", "不是，我不是學生。我是公司職員。"], ["田中", "はい、日本語の先生です。", "是，我是日文老師。"]], "vocab": [["初めまして", "はじめまして", "初次見面"], ["学生", "がくせい", "學生"], ["会社員", "かいしゃいん", "公司職員"], ["先生", "せんせい", "老師"], ["日本語", "にほんご", "日文"]], "tip": "第25課｜初めまして、田中です"}, {"id": "L26", "title": "第26課｜これは何ですか", "tags": ["詢問物品", "否定句"], "grammar": [["これは何ですか", "這是什麼？"], ["～ですか", "是～嗎？"], ["～じゃありません", "不是～"]], "lines": [["李", "これは何ですか。", "這是什麼？"], ["田中", "それは日本茶です。", "那是日本茶。"], ["李", "日本茶ですか。", "是日本茶嗎？"], ["田中", "はい、緑茶です。", "是，是綠茶。"], ["田中", "いいえ、コーヒーじゃありません。紅茶です。", "不是，不是咖啡。是紅茶。"]], "vocab": [["何", "なに", "什麼"], ["日本茶", "にほんちゃ", "日本茶"], ["緑茶", "りょくちゃ", "綠茶"], ["お菓子", "おかし", "點心"], ["コーヒー", "", "咖啡"], ["紅茶", "こうちゃ", "紅茶"]], "tip": "第26課｜これは何ですか"}, {"id": "L27", "title": "第27課｜トイレはどこですか", "tags": ["問路", "場所"], "grammar": [["～はどこですか", "～在哪裡？"], ["右／左／まっすぐ", "右／左／直走"]], "lines": [["客", "すみません、トイレはどこですか。", "不好意思，廁所在哪裡？"], ["店員", "あちらです。", "在那邊。"], ["客", "レジはどこですか。", "收銀台在哪裡？"], ["店員", "入り口の近くです。", "在入口附近。"], ["店員", "まっすぐ行って、右です。", "直走後在右邊。"]], "vocab": [["トイレ", "", "廁所"], ["レジ", "", "收銀台"], ["入り口", "いりぐち", "入口"], ["バス停", "ばすてい", "公車站"], ["右", "みぎ", "右邊"], ["左", "ひだり", "左邊"], ["まっすぐ", "", "直走"]], "tip": "第27課｜トイレはどこですか"}, {"id": "L28", "title": "第28課｜いくらですか", "tags": ["購物", "價錢"], "grammar": [["いくらですか", "多少錢？"], ["～をください", "請給我～"], ["サイズ", "尺寸"]], "lines": [["客", "すみません、これはいくらですか。", "不好意思，這個多少錢？"], ["店員", "1000円です。", "1000日圓。"], ["客", "これをください。", "請給我這個。"], ["客", "この服は派手ですか。", "這件衣服會太花嗎？"], ["客", "大きいサイズはありますか。", "有大尺寸嗎？"]], "vocab": [["いくら", "", "多少錢"], ["円", "えん", "日圓"], ["服", "ふく", "衣服"], ["派手", "はで", "華麗／花俏"], ["サイズ", "", "尺寸"], ["大きい", "おおきい", "大的"]], "tip": "第28課｜いくらですか"}, {"id": "L29", "title": "第29課｜交通與時間", "tags": ["新幹線", "飛機"], "grammar": [["何時の～ですか", "幾點的～？"], ["～ごろ", "大約～左右"], ["～までお願いします", "麻煩到～"]], "lines": [["王", "何時の新幹線ですか。", "幾點的新幹線呢？"], ["木村", "9時5分です。", "9點5分的車。"], ["王", "台中には10時10分ごろ着きますね。", "大約10點10分到台中。"], ["王", "羽田空港までお願いします。", "麻煩到羽田機場。"], ["王", "9時40分です。第2ターミナルです。", "9點40分，第2航廈。"]], "vocab": [["何時", "なんじ", "幾點"], ["新幹線", "しんかんせん", "新幹線"], ["飛行機", "ひこうき", "飛機"], ["会議", "かいぎ", "會議"], ["ターミナル", "", "航廈"]], "tip": "第29課｜交通與時間"}, {"id": "L30", "title": "第30課｜生日與日期", "tags": ["生日", "日期"], "grammar": [["お誕生日おめでとうございます", "祝你生日快樂"], ["～月～日", "～月～日"], ["曜日", "星期"]], "lines": [["山田", "王さん、お誕生日、おめでとうございます。", "王先生，祝你生日快樂。"], ["王", "わあ、うれしい。チョコレートだ！", "哇，好開心。是巧克力！"], ["山田", "来月の8日です。", "下個月8號。"], ["星野", "きょうは6日、木曜日ですよ。", "今天是6號，星期四。"]], "vocab": [["誕生日", "たんじょうび", "生日"], ["来月", "らいげつ", "下個月"], ["木曜日", "もくようび", "星期四"], ["連休", "れんきゅう", "連假"], ["便", "びん", "班機"]], "tip": "第30課｜生日與日期"}, {"id": "L31", "title": "第31課｜咖啡與點餐", "tags": ["咖啡", "點餐"], "grammar": [["ご注文はお決まりでしょうか", "請問決定好要點什麼了嗎？"], ["ホット／アイス", "熱的／冰的"]], "lines": [["店員", "ご注文はお決まりでしょうか。", "請問決定好要點什麼了嗎？"], ["高", "はい、コーヒーをください。", "好，請給我咖啡。"], ["店員", "ホットですか。アイスですか。", "要熱的還是冰的？"], ["高", "アイスコーヒーとレモンティーをください。", "請給我冰咖啡和檸檬茶。"]], "vocab": [["コーヒー", "", "咖啡"], ["アイスコーヒー", "", "冰咖啡"], ["レモンティー", "", "檸檬茶"], ["ホット", "", "熱的"], ["お返し", "おかえし", "找錢"]], "tip": "第31課｜咖啡與點餐"}, {"id": "L32", "title": "第32課｜招待與喝茶", "tags": ["喝茶", "招待"], "grammar": [["お茶はいかがですか", "要不要喝杯茶？"], ["ごちそうさまでした", "謝謝招待"]], "lines": [["田中", "どうぞ、どうぞ。お上がりください。", "請請請，請進。"], ["李", "はい、お邪魔します。", "好的，打擾了。"], ["田中", "お茶はいかがですか。", "要不要喝杯茶？"], ["李", "また今度いただきます。", "下次再喝。"], ["李", "ごちそうさまでした。", "謝謝招待。"]], "vocab": [["お茶", "おちゃ", "茶"], ["お邪魔します", "おじゃまします", "打擾了"], ["失礼します", "しつれいします", "失禮了"], ["残念", "ざんねん", "可惜"], ["ごちそうさま", "", "謝謝招待"]], "tip": "第32課｜招待與喝茶"}, {"id": "L33", "title": "第33課｜お願いします・宅配", "tags": ["お願いします", "宅配"], "grammar": [["～までお願いします", "麻煩到～"], ["宅配便をお願いしたいんですが", "我想寄宅配"], ["何名さまですか", "請問幾位？"]], "lines": [["陳", "羽田空港までお願いします。", "麻煩到羽田機場。"], ["運転手", "国際線ですか。", "是國際線嗎？"], ["李", "宅配便をお願いしたいんですが。", "我想寄宅配。"], ["店員", "どこまでですか。", "要寄到哪裡？"], ["窓口", "何名さまですか。", "請問幾位？"]], "vocab": [["羽田空港", "はねだくうこう", "羽田機場"], ["国際線", "こくさいせん", "國際線"], ["宅配便", "たくはいびん", "宅配"], ["領収書", "りょうしゅうしょ", "收據"], ["大阪", "おおさか", "大阪"]], "tip": "第33課｜お願いします・宅配"}, {"id": "L34", "title": "第34課｜天氣", "tags": ["天氣", "梅雨"], "grammar": [["暑いですね／寒いですね", "好熱／好冷啊"], ["梅雨ですから", "因為是梅雨季"]], "lines": [["田中", "こんにちは。暑いですね。", "你好，好熱啊！"], ["李", "毎日、本当に暑いですね。", "每天都好熱啊。"], ["田中", "台湾の夏はいつもこんなに暑いですか。", "台灣的夏天都這麼熱嗎？"], ["田中", "寒いですね。", "好冷喔。"], ["李", "ええ、今は梅雨ですから。", "對，因為現在是梅雨季。"]], "vocab": [["暑い", "あつい", "熱"], ["寒い", "さむい", "冷"], ["夏", "なつ", "夏天"], ["冬", "ふゆ", "冬天"], ["梅雨", "つゆ", "梅雨"], ["降ります", "ふります", "下雨"]], "tip": "第34課｜天氣"}, {"id": "L35", "title": "第35課｜家人", "tags": ["家族", "兄弟姊妹"], "grammar": [["何人家族ですか", "你家有幾個人？"], ["いくつ違いますか", "差幾歲？"]], "lines": [["田中", "それは誰の写真ですか。", "那是誰的照片？"], ["李", "母です。", "是我媽媽。"], ["田中", "李さんは何人家族ですか。", "你家有幾個人？"], ["李", "4人です。両親とわたしと妹です。", "4個人，爸媽、我和妹妹。"], ["王", "いいえ、妹です。", "不是，是我妹妹。"]], "vocab": [["家族", "かぞく", "家人"], ["母", "はは", "媽媽"], ["両親", "りょうしん", "父母"], ["妹", "いもうと", "妹妹"], ["兄", "あに", "哥哥"], ["姉", "あね", "姊姊"]], "tip": "第35課｜家人"}, {"id": "L36", "title": "第36課｜一緒に行きませんか", "tags": ["邀約", "一起"], "grammar": [["一緒に行きませんか", "要不要一起去？"], ["予定がありますか", "有安排嗎？"], ["よかったら", "方便的話"]], "lines": [["劉", "今晩、何か予定がありますか。", "今晚有什麼計畫嗎？"], ["中川", "いいえ、特にないですが、何か。", "沒有特別的，怎麼了？"], ["劉", "韓国料理を食べに行きますが、一緒に行きませんか。", "我要去吃韓式料理，要不要一起去？"], ["蘇", "よかったら一つどうぞ。", "不嫌棄的話請用一個。"], ["蘇", "駅まで一緒にいかがでしょうか。", "要不要一起到車站？"]], "vocab": [["一緒に", "いっしょに", "一起"], ["予定", "よてい", "計畫"], ["韓国料理", "かんこくりょうり", "韓式料理"], ["お土産", "おみやげ", "伴手禮"], ["地下鉄", "ちかてつ", "捷運／地鐵"]], "tip": "第36課｜一緒に行きませんか"}];
+const kanaData = [{"title": "平假名・片假名", "items": [["あ", "ア", "a"], ["い", "イ", "i"], ["う", "ウ", "u"], ["え", "エ", "e"], ["お", "オ", "o"], ["か", "カ", "ka"], ["き", "キ", "ki"], ["く", "ク", "ku"], ["け", "ケ", "ke"], ["こ", "コ", "ko"], ["さ", "サ", "sa"], ["し", "シ", "shi"], ["す", "ス", "su"], ["せ", "セ", "se"], ["そ", "ソ", "so"], ["た", "タ", "ta"], ["ち", "チ", "chi"], ["つ", "ツ", "tsu"], ["て", "テ", "te"], ["と", "ト", "to"], ["な", "ナ", "na"], ["に", "ニ", "ni"], ["ぬ", "ヌ", "nu"], ["ね", "ネ", "ne"], ["の", "ノ", "no"], ["は", "ハ", "ha"], ["ひ", "ヒ", "hi"], ["ふ", "フ", "fu"], ["へ", "ヘ", "he"], ["ほ", "ホ", "ho"], ["ま", "マ", "ma"], ["み", "ミ", "mi"], ["む", "ム", "mu"], ["め", "メ", "me"], ["も", "モ", "mo"], ["や", "ヤ", "ya"], ["ゆ", "ユ", "yu"], ["よ", "ヨ", "yo"], ["ら", "ラ", "ra"], ["り", "リ", "ri"], ["る", "ル", "ru"], ["れ", "レ", "re"], ["ろ", "ロ", "ro"], ["わ", "ワ", "wa"], ["を", "ヲ", "wo"], ["ん", "ン", "n"]]}, {"title": "濁音", "items": [["が", "ガ", "ga"], ["ぎ", "ギ", "gi"], ["ぐ", "グ", "gu"], ["げ", "ゲ", "ge"], ["ご", "ゴ", "go"], ["ざ", "ザ", "za"], ["じ", "ジ", "ji"], ["ず", "ズ", "zu"], ["ぜ", "ゼ", "ze"], ["ぞ", "ゾ", "zo"], ["だ", "ダ", "da"], ["ぢ", "ヂ", "ji"], ["づ", "ヅ", "zu"], ["で", "デ", "de"], ["ど", "ド", "do"], ["ば", "バ", "ba"], ["び", "ビ", "bi"], ["ぶ", "ブ", "bu"], ["べ", "ベ", "be"], ["ぼ", "ボ", "bo"]]}, {"title": "半濁音", "items": [["ぱ", "パ", "pa"], ["ぴ", "ピ", "pi"], ["ぷ", "プ", "pu"], ["ぺ", "ペ", "pe"], ["ぽ", "ポ", "po"]]}, {"title": "拗音", "items": [["きゃ", "キャ", "kya"], ["きゅ", "キュ", "kyu"], ["きょ", "キョ", "kyo"], ["しゃ", "シャ", "sha"], ["しゅ", "シュ", "shu"], ["しょ", "ショ", "sho"], ["ちゃ", "チャ", "cha"], ["ちゅ", "チュ", "chu"], ["ちょ", "チョ", "cho"], ["にゃ", "ニャ", "nya"], ["にゅ", "ニュ", "nyu"], ["にょ", "ニョ", "nyo"], ["ひゃ", "ヒャ", "hya"], ["ひゅ", "ヒュ", "hyu"], ["ひょ", "ヒョ", "hyo"], ["みゃ", "ミャ", "mya"], ["みゅ", "ミュ", "myu"], ["みょ", "ミョ", "myo"], ["りゃ", "リャ", "rya"], ["りゅ", "リュ", "ryu"], ["りょ", "リョ", "ryo"], ["ぎゃ", "ギャ", "gya"], ["ぎゅ", "ギュ", "gyu"], ["ぎょ", "ギョ", "gyo"], ["じゃ", "ジャ", "ja"], ["じゅ", "ジュ", "ju"], ["じょ", "ジョ", "jo"], ["びゃ", "ビャ", "bya"], ["びゅ", "ビュ", "byu"], ["びょ", "ビョ", "byo"], ["ぴゃ", "ピャ", "pya"], ["ぴゅ", "ピュ", "pyu"], ["ぴょ", "ピョ", "pyo"]]}];
+let current = "L17";
+let showZh = true;
+let quizState = {};
+
+const $ = (id) => document.getElementById(id);
+function attr(s) {
+  return String(s ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+}
+function text(s) {
+  return String(s ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+}
+function showMode(id, doScroll=true) {
+  document.querySelectorAll(".mode").forEach(e => e.classList.remove("active"));
+  $(id).classList.add("active");
+  if (doScroll) window.scrollTo({top:0, behavior:"smooth"});
+}
+function speakText(t) {
+  stopSpeak();
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang = "ja-JP";
+  u.rate = parseFloat($("rate").value || "0.88");
+  u.pitch = 1.03;
+  speechSynthesis.speak(u);
+}
+function stopSpeak() { speechSynthesis.cancel(); }
+
+function init() {
+  $("btnLessons").onclick = () => showMode("lessonsMode");
+  $("btnKana").onclick = () => showMode("kanaMode");
+  $("btnAllQuiz").onclick = () => { showMode("allQuizMode"); startAllQuiz(); };
+  $("btnFav").onclick = () => { showMode("favMode"); renderFavs(); };
+  $("btnWrong").onclick = () => { showMode("wrongMode"); renderWrongs(); };
+  $("btnToggleZh").onclick = toggleZh;
+  $("btnStop").onclick = stopSpeak;
+  $("btnSpeakLesson").onclick = speakCurrent;
+  $("btnRandom").onclick = randomLine;
+  renderLessonTabs();
+  renderLessons();
+  renderKana();
+  selectLesson("L17");
+}
+function renderLessonTabs() {
+  $("lessonTabs").innerHTML = lessons.map(l => `<button class="pill secondary" id="tab-${l.id}" data-id="${l.id}">${text(l.title.replace("｜"," "))}</button>`).join("");
+  document.querySelectorAll("#lessonTabs button").forEach(btn => btn.onclick = () => selectLesson(btn.dataset.id));
+}
+function renderLessons() {
+  $("lessons").innerHTML = lessons.map(l => `
+    <section class="lesson" id="${l.id}">
+      <h2>${text(l.title)}</h2>
+      <div class="badges">${l.tags.map(t => `<span class="badge">${text(t)}</span>`).join("")}</div>
+      <div class="section-title">📌 句型整理</div>
+      <div class="grammar">${l.grammar.map(g => `<div class="card"><b class="speakable" data-text="${attr(g[0])}">${text(g[0])}</b><p>${text(g[1])}</p></div>`).join("")}</div>
+      <div class="section-title">🗣️ 句子／會話</div>
+      <div class="dialogue">${l.lines.map(lineHtml).join("")}</div>
+      <div class="section-title">📚 單字</div>
+      <div class="vocab">${l.vocab.map(vocabHtml).join("")}</div>
+      <div class="section-title">📝 本課選擇題：單字＋句子</div>
+      <button class="startQuiz" data-id="${l.id}">開始本課測驗</button>
+      <div id="quiz-${l.id}" class="quizbox" style="display:none"></div>
+    </section>
+  `).join("");
+  document.querySelectorAll(".speakable").forEach(el => el.onclick = () => speakText(el.dataset.text));
+  document.querySelectorAll(".startQuiz").forEach(btn => btn.onclick = () => startLessonQuiz(btn.dataset.id));
+  document.querySelectorAll(".speakBtn").forEach(btn => btn.onclick = () => speakText(btn.dataset.text));
+  document.querySelectorAll(".favBtn").forEach(btn => btn.onclick = () => toggleFav(btn.dataset.jp, btn.dataset.kana, btn.dataset.zh, btn));
+}
+function lineHtml(x) {
+  return `<div class="line"><div class="speaker">${text(x[0])}</div><div><div class="jp speakable" data-text="${attr(x[1])}">${text(x[1])}</div><div class="zh">${text(x[2])}</div></div><button class="secondary sound speakBtn" data-text="${attr(x[1])}">🔊</button></div>`;
+}
+function vocabHtml(v) {
+  const key = v[0] + "|" + v[2];
+  const saved = isFav(key) ? " saved" : "";
+  return `<div class="card vocab-card"><div class="jpword speakable" data-text="${attr(v[0])}">${text(v[0])}</div><div class="kana">${text(v[1] || "")}</div><div class="zhword">${text(v[2])}</div><div class="mini-actions"><button class="secondary speakBtn" data-text="${attr(v[0])}">聽</button><button class="secondary star favBtn${saved}" data-jp="${attr(v[0])}" data-kana="${attr(v[1] || "")}" data-zh="${attr(v[2])}">⭐</button></div></div>`;
+}
+function selectLesson(id) {
+  current = id;
+  document.querySelectorAll(".lesson").forEach(e => e.classList.toggle("active", e.id === id));
+  document.querySelectorAll("#lessonTabs button").forEach(e => e.classList.remove("active"));
+  const tab = $("tab-" + id);
+  if (tab) tab.classList.add("active");
+  const l = lessons.find(x => x.id === id);
+  $("todayTip").textContent = l ? l.title : "";
+  showMode("lessonsMode", false);
+}
+function speakCurrent() {
+  const l = lessons.find(x => x.id === current);
+  if (!l) return;
+  let i = 0;
+  stopSpeak();
+  function next() {
+    if (i >= l.lines.length) return;
+    const u = new SpeechSynthesisUtterance(l.lines[i++][1]);
+    u.lang = "ja-JP";
+    u.rate = parseFloat($("rate").value || "0.88");
+    u.onend = () => setTimeout(next, 350);
+    speechSynthesis.speak(u);
+  }
+  next();
+}
+function toggleZh() {
+  showZh = !showZh;
+  document.querySelectorAll(".zh").forEach(e => e.style.display = showZh ? "block" : "none");
+}
+function randomLine() {
+  const all = lessons.flatMap(l => l.lines);
+  const x = all[Math.floor(Math.random() * all.length)];
+  speakText(x[1]);
+  alert(x[1] + "\n\n" + x[2]);
+}
+function renderKana() {
+  $("kanaRoot").innerHTML = kanaData.map(sec => `<div class="kana-section"><h3>${text(sec.title)}</h3><div class="kana-grid">${sec.items.map(k => `<div class="kana-card speakable" data-text="${attr(k[0])}"><div class="kana-main">${text(k[0])} <span class="kana-pair">${text(k[1])}</span></div><div class="kana-romaji">${text(k[2])}</div></div>`).join("")}</div></div>`).join("");
+  document.querySelectorAll("#kanaRoot .speakable").forEach(el => el.onclick = () => speakText(el.dataset.text));
+}
+function allVocab() { return lessons.flatMap(l => l.vocab); }
+function allLines() { return lessons.flatMap(l => l.lines); }
+function shuffle(a) { return [...a].sort(() => Math.random() - 0.5); }
+function makeOptions(answer, pool) {
+  let opts = [answer];
+  let clean = [...new Set(pool.filter(x => x && x !== answer))];
+  while (opts.length < 4 && clean.length) opts.push(clean.splice(Math.floor(Math.random()*clean.length),1)[0]);
+  return shuffle(opts);
+}
+function makeQuestions(l) {
+  return shuffle([
+    ...l.vocab.map(v => ({kind:"單字", q:v[0], a:v[2], speak:v[0], pool:l.vocab.map(x=>x[2])})),
+    ...l.lines.map(x => ({kind:"句子", q:x[1], a:x[2], speak:x[1], pool:l.lines.map(y=>y[2])}))
+  ]);
+}
+function startLessonQuiz(id) {
+  const l = lessons.find(x => x.id === id);
+  quizState[id] = {qs: makeQuestions(l), i:0, score:0};
+  $("quiz-" + id).style.display = "block";
+  renderQuiz(id);
+}
+function renderQuiz(id) {
+  const st = quizState[id];
+  const box = $("quiz-" + id);
+  if (!st || st.i >= st.qs.length) {
+    box.innerHTML = `<h3>完成！</h3><p>得分：${st.score}/${st.qs.length}</p><button class="startAgain">再練一次</button>`;
+    box.querySelector(".startAgain").onclick = () => startLessonQuiz(id);
+    return;
+  }
+  const q = st.qs[st.i];
+  const opts = makeOptions(q.a, q.pool);
+  box.innerHTML = `<div class="progress">${q.kind}題 ${st.i+1}/${st.qs.length}｜得分 ${st.score}</div><div class="bigq speakable" data-text="${attr(q.speak)}">${text(q.q)}</div><button class="secondary speakBtn" data-text="${attr(q.speak)}">🔊 聽題目</button><div class="choices">${opts.map(o => `<button class="choice" data-answer="${attr(o)}">${text(o)}</button>`).join("")}</div><div class="msg"></div>`;
+  box.querySelector(".speakable").onclick = () => speakText(q.speak);
+  box.querySelector(".speakBtn").onclick = () => speakText(q.speak);
+  box.querySelectorAll(".choice").forEach(btn => btn.onclick = () => answerQuiz(id, btn.dataset.answer, btn));
+}
+function answerQuiz(id, ans, btn) {
+  const st = quizState[id];
+  const q = st.qs[st.i];
+  document.querySelectorAll(`#quiz-${id} .choice`).forEach(b => b.disabled = true);
+  const msg = $(`quiz-${id}`).querySelector(".msg");
+  if (ans === q.a) {
+    st.score++;
+    btn.classList.add("ok");
+    msg.textContent = "答對了！";
+    setTimeout(() => { st.i++; renderQuiz(id); }, 650);
+  } else {
+    btn.classList.add("bad");
+    addWrong({jp:q.q, kana:q.kind, zh:q.a});
+    msg.textContent = "答錯了，正解：" + q.a + "。已加入錯題本。";
+    setTimeout(() => { st.i++; renderQuiz(id); }, 1300);
+  }
+}
+function startAllQuiz() {
+  const qs = shuffle([
+    ...allVocab().map(v => ({kind:"單字", q:v[0], a:v[2], speak:v[0], pool:allVocab().map(x=>x[2])})),
+    ...allLines().map(x => ({kind:"句子", q:x[1], a:x[2], speak:x[1], pool:allLines().map(y=>y[2])}))
+  ]).slice(0, 30);
+  quizState.ALL = {qs, i:0, score:0};
+  renderAllQuiz();
+}
+function renderAllQuiz() {
+  const st = quizState.ALL;
+  const box = $("allQuiz");
+  if (!st || st.i >= st.qs.length) {
+    box.innerHTML = `<h3>完成！</h3><p>得分：${st.score}/${st.qs.length}</p><button id="againAll">再練一次</button>`;
+    $("againAll").onclick = startAllQuiz;
+    return;
+  }
+  const q = st.qs[st.i];
+  const opts = makeOptions(q.a, q.pool);
+  box.innerHTML = `<div class="progress">${q.kind}題 ${st.i+1}/${st.qs.length}｜得分 ${st.score}</div><div class="bigq speakable" data-text="${attr(q.speak)}">${text(q.q)}</div><button class="secondary speakBtn" data-text="${attr(q.speak)}">🔊 聽題目</button><div class="choices">${opts.map(o => `<button class="choice" data-answer="${attr(o)}">${text(o)}</button>`).join("")}</div><div class="msg"></div>`;
+  box.querySelector(".speakable").onclick = () => speakText(q.speak);
+  box.querySelector(".speakBtn").onclick = () => speakText(q.speak);
+  box.querySelectorAll(".choice").forEach(btn => btn.onclick = () => answerAll(btn.dataset.answer, btn));
+}
+function answerAll(ans, btn) {
+  const st = quizState.ALL;
+  const q = st.qs[st.i];
+  document.querySelectorAll("#allQuiz .choice").forEach(b => b.disabled = true);
+  const msg = $("allQuiz").querySelector(".msg");
+  if (ans === q.a) {
+    st.score++;
+    btn.classList.add("ok");
+    msg.textContent = "答對了！";
+    setTimeout(() => { st.i++; renderAllQuiz(); }, 650);
+  } else {
+    btn.classList.add("bad");
+    addWrong({jp:q.q, kana:q.kind, zh:q.a});
+    msg.textContent = "答錯了，正解：" + q.a + "。已加入錯題本。";
+    setTimeout(() => { st.i++; renderAllQuiz(); }, 1300);
+  }
+}
+function favs() { return JSON.parse(localStorage.getItem("sunnyFavsFixed") || "[]"); }
+function saveFavs(x) { localStorage.setItem("sunnyFavsFixed", JSON.stringify(x)); }
+function isFav(key) { return favs().some(x => x.key === key); }
+function toggleFav(jp,kana,zh,btn) {
+  const key = jp + "|" + zh;
+  let f = favs();
+  if (isFav(key)) { f = f.filter(x => x.key !== key); btn.classList.remove("saved"); }
+  else { f.push({key,jp,kana,zh}); btn.classList.add("saved"); }
+  saveFavs(f);
+}
+function renderFavs() {
+  const f = favs();
+  $("favList").innerHTML = f.length ? f.map(v => vocabHtml([v.jp,v.kana,v.zh])).join("") : `<div class="empty">還沒有收藏。</div>`;
+  document.querySelectorAll("#favList .speakBtn, #favList .speakable").forEach(el => el.onclick = () => speakText(el.dataset.text));
+  document.querySelectorAll("#favList .favBtn").forEach(btn => btn.onclick = () => toggleFav(btn.dataset.jp, btn.dataset.kana, btn.dataset.zh, btn));
+}
+function wrongs() { return JSON.parse(localStorage.getItem("sunnyWrongsFixed") || "[]"); }
+function saveWrongs(x) { localStorage.setItem("sunnyWrongsFixed", JSON.stringify(x)); }
+function addWrong(v) { let w = wrongs(); if (!w.some(x => x.jp === v.jp)) w.push(v); saveWrongs(w); }
+function renderWrongs() {
+  const w = wrongs();
+  $("wrongList").innerHTML = w.length ? w.map(v => vocabHtml([v.jp,v.kana,v.zh])).join("") : `<div class="empty">目前沒有錯題。</div>`;
+  document.querySelectorAll("#wrongList .speakBtn, #wrongList .speakable").forEach(el => el.onclick = () => speakText(el.dataset.text));
+  document.querySelectorAll("#wrongList .favBtn").forEach(btn => btn.onclick = () => toggleFav(btn.dataset.jp, btn.dataset.kana, btn.dataset.zh, btn));
+}
+init();
+</script>
+</body>
+</html>
